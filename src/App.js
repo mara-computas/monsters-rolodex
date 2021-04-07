@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Component } from "react";
+import { CardList } from "./components/card-list/card-list.component";
+import { SearchBox } from "./components/search-box/search-box.component";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      movieCaracters: [],
+      searchString: "",
+    };
+
+    // this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    fetch("http://jsonplaceholder.typicode.com/users/")
+      .then((response) => response.json())
+      .then((users) => this.setState({ movieCaracters: users }));
+  }
+
+  handleChange = (event) => {
+    this.setState({ searchString: event.target.value });
+  };
+  render() {
+    const { movieCaracters, searchString } = this.state;
+    const filteredMovieCharacters = movieCaracters.filter((character) =>
+      character.name.toLowerCase().includes(searchString.toLowerCase())
+    );
+    return (
+      <div className="App">
+        <h1>Movie Characters - React project</h1>
+        <SearchBox
+          placeholder="Search for characters"
+          handleChange={this.handleChange}
+        />
+        <CardList movieCaracters={filteredMovieCharacters}></CardList>
+      </div>
+    );
+  }
 }
 
 export default App;
