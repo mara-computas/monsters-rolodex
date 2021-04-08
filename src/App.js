@@ -2,6 +2,7 @@ import "./App.css";
 import { Component } from "react";
 import { CardList } from "./components/card-list/card-list.component";
 import { SearchBox } from "./components/search-box/search-box.component";
+import "./dummy-db/users.json";
 
 class App extends Component {
   constructor() {
@@ -16,10 +17,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("http://jsonplaceholder.typicode.com/users/")
+    fetch("https://jsonplaceholder.typicode.com/users/")
       .then((response) => response.json())
       .then((users) => this.setState({ movieCaracters: users }));
   }
+
+  // componentDidMount() {
+  //   const users = require("./dummy-db/users.json");
+  //   this.setState({ movieCaracters: users });
+  // }
 
   handleChange = (event) => {
     this.setState({ searchString: event.target.value });
